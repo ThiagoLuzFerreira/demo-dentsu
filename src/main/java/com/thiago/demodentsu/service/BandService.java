@@ -1,6 +1,8 @@
 package com.thiago.demodentsu.service;
 
+import com.thiago.demodentsu.mapper.GenericModelMapper;
 import com.thiago.demodentsu.model.Band;
+import com.thiago.demodentsu.model.dto.BandDTO;
 import com.thiago.demodentsu.webclient.BandFeingClient;
 import org.springframework.stereotype.Service;
 
@@ -17,33 +19,31 @@ public class BandService {
         this.bandFeingClient = bandFeingClient;
     }
 
-    public List<Band> findAll(){
-        return bandFeingClient.getBands();
+    public List<BandDTO> findAll(){
+        var bands = bandFeingClient.getBands();
+        return bands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
     }
 
-    public List<Band> filterBands(String orderBy) {
+    public List<BandDTO> filterBands(String orderBy) {
 
         List<Band> bands = bandFeingClient.getBands();
 
         if ("alphabetical".equals(orderBy)) {
-            return bands.stream()
-                    .sorted(Comparator.comparing(Band::getName))
-                    .collect(Collectors.toList());
+            var orderedBands = bands.stream().sorted(Comparator.comparing(Band::getName)).toList();
+            return orderedBands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
         } else if ("numPlays".equals(orderBy)) {
-            return bands.stream()
-                    .sorted(Comparator.comparingInt(Band::getNumPlays).reversed())
-                    .collect(Collectors.toList());
+            var orderedBands = bands.stream().sorted(Comparator.comparingInt(Band::getNumPlays).reversed()).toList();
+            return orderedBands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
         } else {
-            return bands;
+            return bands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
         }
     }
 
-    public List<Band> filterBandsByName(String name) {
+    public List<BandDTO> filterBandsByName(String name) {
 
         List<Band> bands = bandFeingClient.getBands();
 
-        return bands.stream()
-                .filter(band -> band.getName().toLowerCase().contains(name.toLowerCase()))
-                .collect(Collectors.toList());
+        var filtredBands = bands.stream().filter(band -> band.getName().toLowerCase().contains(name.toLowerCase())).toList();
+        return filtredBands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
     }
 }
