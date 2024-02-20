@@ -5,6 +5,7 @@ import com.thiago.demodentsu.model.Band;
 import com.thiago.demodentsu.model.dto.BandDTO;
 import com.thiago.demodentsu.model.dto.BandFullInfoDTO;
 import com.thiago.demodentsu.webclient.BandFeingClient;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class BandServiceImpl implements BandService {
         return bands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
     }
 
+    @CircuitBreaker(name = "filterBandsCB", fallbackMethod = "fallbackFilterBands")
     @Cacheable(cacheNames = "bandsSort")
     @Override
     public List<BandDTO> filterBands(String orderBy) {
@@ -53,6 +55,9 @@ public class BandServiceImpl implements BandService {
         }
     }
 
+    public List<BandDTO> fallbackFilterBands(Throwable throwable){
+        return List.of(new BandDTO("The Best Band", 10));
+    }
     @Cacheable(cacheNames = "bandsFilteredByName")
     @Override
     public List<BandDTO> filterBandsByName(String name) {
