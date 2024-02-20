@@ -5,6 +5,7 @@ import com.thiago.demodentsu.model.Band;
 import com.thiago.demodentsu.model.dto.BandDTO;
 import com.thiago.demodentsu.model.dto.BandFullInfoDTO;
 import com.thiago.demodentsu.webclient.BandFeingClient;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,11 +22,13 @@ public class BandService {
         this.bandFeingClient = bandFeingClient;
     }
 
+    @Cacheable(cacheNames = "bands")
     public List<BandDTO> findAll(){
         var bands = bandFeingClient.getBands();
         return bands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
     }
 
+    @Cacheable(cacheNames = "bandsSort")
     public List<BandDTO> filterBands(String orderBy) {
 
         List<Band> bands = bandFeingClient.getBands();
@@ -41,6 +44,7 @@ public class BandService {
         }
     }
 
+    @Cacheable(cacheNames = "bandsFilteredByName")
     public List<BandDTO> filterBandsByName(String name) {
 
         List<Band> bands = bandFeingClient.getBands();
@@ -49,6 +53,7 @@ public class BandService {
         return filtredBands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
     }
 
+    @Cacheable(cacheNames = "bandsFilteredByNameFullInfo")
     public List<BandFullInfoDTO> filterBandsByNameFullInfo(String name) {
         List<Band> bands = bandFeingClient.getBands();
         List<Band> filteredBands = new ArrayList<>();

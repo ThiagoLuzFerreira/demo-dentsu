@@ -1,6 +1,5 @@
 package com.thiago.demodentsu.controller;
 
-import com.thiago.demodentsu.model.Band;
 import com.thiago.demodentsu.model.dto.BandDTO;
 import com.thiago.demodentsu.model.dto.BandFullInfoDTO;
 import com.thiago.demodentsu.service.BandService;
