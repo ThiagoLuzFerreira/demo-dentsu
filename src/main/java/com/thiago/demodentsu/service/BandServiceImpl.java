@@ -58,6 +58,7 @@ public class BandServiceImpl implements BandService {
     public List<BandDTO> fallbackFilterBands(Throwable throwable){
         return List.of(new BandDTO("The Best Band", 10));
     }
+
     @Cacheable(cacheNames = "bandsFilteredByName")
     @Override
     public List<BandDTO> filterBandsByName(String name) {
