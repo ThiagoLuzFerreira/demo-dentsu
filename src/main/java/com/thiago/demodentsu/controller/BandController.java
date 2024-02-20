@@ -2,6 +2,7 @@ package com.thiago.demodentsu.controller;
 
 import com.thiago.demodentsu.model.Band;
 import com.thiago.demodentsu.model.dto.BandDTO;
+import com.thiago.demodentsu.model.dto.BandFullInfoDTO;
 import com.thiago.demodentsu.service.BandService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,5 +36,9 @@ public class BandController {
         }
     }
 
+    @GetMapping("/fullinfo")
+    public ResponseEntity<List<BandFullInfoDTO>> getFilteredBandByNameFullInfo(@RequestParam(required = false) String name) {
+        return ResponseEntity.ok().body(bandService.filterBandsByNameFullInfo(name));
+    }
 
 }
