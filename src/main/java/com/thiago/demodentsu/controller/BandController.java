@@ -2,7 +2,7 @@ package com.thiago.demodentsu.controller;
 
 import com.thiago.demodentsu.model.dto.BandDTO;
 import com.thiago.demodentsu.model.dto.BandFullInfoDTO;
-import com.thiago.demodentsu.service.BandService;
+import com.thiago.demodentsu.service.BandServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +15,9 @@ import java.util.List;
 @RequestMapping("api/v1/bands")
 public class BandController {
 
-    private final BandService bandService;
+    private final BandServiceImpl bandService;
 
-    public BandController(BandService bandService) {
+    public BandController(BandServiceImpl bandService) {
         this.bandService = bandService;
     }
 
