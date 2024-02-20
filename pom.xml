@@ -65,8 +65,6 @@
             <artifactId>resilience4j-spring-boot3</artifactId>
             <version>2.2.0</version>
         </dependency>
-
-
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -81,6 +79,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>demo-dentsu</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
