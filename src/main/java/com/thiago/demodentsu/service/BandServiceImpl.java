@@ -28,6 +28,7 @@ public class BandServiceImpl implements BandService {
     @Override
     public List<BandDTO> findAll(){
         log.info("finding all bands");
+
         var bands = bandFeingClient.getBands();
         return bands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
     }
@@ -56,8 +57,10 @@ public class BandServiceImpl implements BandService {
     @Override
     public List<BandDTO> filterBandsByName(String name) {
 
+        log.info("filtering bands by name " + name);
+
         List<Band> bands = bandFeingClient.getBands();
-        log.info("filtering bands by name");
+
         var filtredBands = bands.stream().filter(band -> band.getName().toLowerCase().contains(name.toLowerCase())).toList();
         return filtredBands.stream().map(band -> GenericModelMapper.parseObject(band, BandDTO.class)).collect(Collectors.toList());
     }
@@ -65,7 +68,9 @@ public class BandServiceImpl implements BandService {
     @Cacheable(cacheNames = "bandsFilteredByNameFullInfo")
     @Override
     public List<BandFullInfoDTO> filterBandsByNameFullInfo(String name) {
-        log.info("returning bands full info searched by name");
+
+        log.info("returning bands full info searched by name " + name);
+
         List<Band> bands = bandFeingClient.getBands();
         List<Band> filteredBands = new ArrayList<>();
         for (Band band : bands) {
